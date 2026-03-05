@@ -166,7 +166,7 @@ root = ctk.CTk()
 root = ctk.CTk()
 root.title("LexFlow")
 
-root.iconbitmap(resource_path("icon.ico"))
+root.iconbitmap("icon.ico")
 
 root.title("Cre: Nguyễn Lê Anh Tuấn - Donate (MOMO): 0835787489 - MBbank: 240120076868")
 
