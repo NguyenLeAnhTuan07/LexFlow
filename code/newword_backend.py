@@ -119,9 +119,23 @@ class WordTrainer:
         if self.basename == "mistake.csv":
             return
 
-        with open("mistake.csv", "a", newline="", encoding="utf-8-sig") as f:
+        filename = "mistake.csv"
+
+        file_exists = os.path.exists(filename)
+
+        with open(filename, "a", newline="", encoding="utf-8-sig") as f:
 
             writer = csv.writer(f)
+
+            # nếu file chưa tồn tại -> tạo header
+            if not file_exists:
+                writer.writerow([
+                    "english",
+                    "pos",
+                    "vietnamese",
+                    "example",
+                    "example_vi"
+                ])
 
             writer.writerow([
                 self.current["en"],
