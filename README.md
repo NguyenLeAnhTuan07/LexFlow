@@ -1,157 +1,196 @@
-# LexFlow ⚡
+<div align="center">
 
-LexFlow is a lightweight desktop application designed to help users learn English vocabulary efficiently.  
-The application allows users to import vocabulary lists, create new vocabulary files, and practice words through a simple and intuitive interface.
+# ⚡ LexFlow
 
----
+**A modern vocabulary learning & quiz practice application built with Python**
 
-## Features
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square&logo=python)
+![CustomTkinter](https://img.shields.io/badge/CustomTkinter-latest-green?style=flat-square)
+![Pandas](https://img.shields.io/badge/Pandas-latest-orange?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-purple?style=flat-square)
 
-- Import vocabulary from **CSV** or **XLSX**
-- Create a **new vocabulary file directly inside the application**
-- Random vocabulary practice mode
-- **Typing mode** to practice recalling words
-- **Multiple-choice mode** to test vocabulary recognition
-- **SRS-style review intervals** (30 minutes, 1 day, 3 days, 7 days)
-- Vocabulary progress bar
-- Simple and clean dark-mode interface
-- Lightweight and fast
+*Chúc mọi người học tốt 🚀 — by Nguyễn Lê Anh Tuấn*
+
+</div>
 
 ---
 
-## Vocabulary File Format
+## 📖 Overview
 
-LexFlow supports vocabulary files created using spreadsheet software such as Microsoft Excel.
+**LexFlow** is a desktop application designed to help users learn English vocabulary and practice multiple-choice quizzes — built with a clean, modern dark-mode interface powered by [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter).
 
-Your vocabulary file must contain **5 columns** with the following headers:
-
-| word | type | meaning | example | example_Vi |
-|-----|-----|-----|-----|-----|
-| apple | noun | quả táo | I eat an apple every day. | Tôi ăn một quả táo mỗi ngày |
-| run | verb | chạy | He runs very fast. | Anh ấy chạy rất nhanh |
-
-### Column Description
-
-- **word** – the English word  
-- **type** – word type (noun, verb, adjective, etc.)  
-- **meaning** – Vietnamese meaning  
-- **example** – example sentence in English  
-- **example_Vi** – Vietnamese translation of the example sentence  
+Whether you're studying for an exam or building your own question sets, LexFlow keeps everything organized in simple `.csv` / `.xlsx` files that you fully control.
 
 ---
 
-# Adding Vocabulary
+## ✨ Features
 
-LexFlow allows users to add vocabulary in two ways.
+### 📚 Vocabulary Learning
+- Load vocabulary from `.csv` or `.xlsx` files
+- Three learning modes: **Random**, **English → Vietnamese**, **Vietnamese → English**
+- Two quiz styles: **Typing** and **Multiple Choice**
+- Streak counter, accuracy tracking, and session summary
+- Wrong answers automatically saved to `mistake.csv` for targeted review
 
-## Method 1 — Create a New Vocabulary File
+### ⏰ Spaced Repetition System (SRS)
+- Learned words are automatically queued for review at: **30 min → 1 day → 3 days → 7 days**
+- On app startup, a popup reminds you when reviews are due
+- Correct reviews advance to the next stage; wrong answers stay and repeat
+- After completing all 7-day reviews, the cycle restarts from 30 min
 
-1. Open the **Add Word** tab.
-2. Click **Tạo file mới** (Create new file).
-3. Choose a location to save the file.
-4. You can **customize the file name** before saving.
-5. After creating the file, enter vocabulary information into the input fields:
+### 📝 Multiple-Choice Quiz
+- Load quiz questions from `.csv` or `.xlsx` files
+- Select the number of questions via a slider (up to 150)
+- Optional **countdown timer** per question (customizable seconds)
+- Answer options (A/B/C/D) keep their labels but **shuffle content** each round
+- Wrong answers saved to `quiz_mistakes.csv`; correct answers in mistake mode remove the entry
 
-- Word
-- Type
-- Meaning
-- Example
-- Translate Example
+### ✏️ Add Vocabulary
+- Create a new `.csv` file or append to an existing one
+- 5 input fields: **Word · Type · Meaning · Example · Translated Example**
+- Press `Enter` / `Tab` to jump between fields; last field auto-saves
+- Duplicate detection before saving
+- Live preview table shows all words in the loaded file
 
-6. Press **Enter** or click **Lưu từ** to save the word.
-7. The word will appear in the vocabulary list below.
+### ➕ Add Quiz Questions
+- Create a new quiz file or open an existing one
+- 6 input fields: **Question · Answer (A/B/C/D) · A · B · C · D**
+- Validates that `Answer` is one of A, B, C, D
+- Duplicate detection and live preview table
 
----
-
-## Method 2 — Open an Existing CSV File
-
-1. Go to the **Add Word** tab.
-2. Click **Mở file có sẵn** (Open existing file).
-3. Select a **.csv vocabulary file** from your computer.
-4. After loading the file, you can continue adding new words using the input fields.
-5. Press **Enter** or click **Lưu từ** to save the new vocabulary.
-
----
-
-# How to Create a Vocabulary File Manually
-
-You can create a vocabulary file using spreadsheet software such as Microsoft Excel.
-
-### Step 1
-
-Open Excel.
-
-### Step 2
-
-Create the following columns in the first row:
-
-word | type | meaning | example | example_Vi
-
-### Step 3
-
-Add vocabulary data below the header.
-
-Example:
-
-| word | type | meaning | example | example_Vi |
-|-----|-----|-----|-----|-----|
-| book | noun | quyển sách | I read a book every night. | Tôi đọc sách mỗi tối |
-| learn | verb | học | She learns English every day. | Cô ấy học tiếng Anh mỗi ngày |
-
-### Step 4
-
-Save the file as one of the following formats:
-
-CSV (*.csv)  
-or  
-Excel Workbook (*.xlsx)
-
-After saving the file, you can load it into LexFlow.
+### 📊 Statistics
+- Bar chart showing correct/wrong answers for the **last 7 days**
+- All-time totals displayed in the stats popup
 
 ---
 
-# Running LexFlow
+## 🗂️ File Formats
 
-## Option 1 — Run the executable file
+### Vocabulary File (`.csv` / `.xlsx`)
+| word | type | meaning | example | translate_example |
+|------|------|---------|---------|-------------------|
+| run | v. | chạy | I run every day. | Tôi chạy mỗi ngày. |
+| book | n. | quyển sách | I read a book. | Tôi đọc một quyển sách. |
 
-Download and run:
+### Quiz File (`.csv` / `.xlsx`)
+| question | answer | A | B | C | D |
+|----------|--------|---|---|---|---|
+| 2 + 2 = ? | B | 3 | 4 | 5 | 6 |
+| Capital of France? | C | Berlin | Rome | Paris | Madrid |
 
-LexFlow.exe
-
-Then load your vocabulary file to begin learning.
+> **Note:** The `answer` column must contain **A**, **B**, **C**, or **D** — corresponding to the correct option column.
 
 ---
 
-## Option 2 — Run using Python source code
+## ⚙️ Installation
 
-If you want to run LexFlow using Python, install the required libraries first.
+### 1. Clone the repository
+```bash
+git clone https://github.com/yourusername/lexflow.git
+cd lexflow
+```
 
-Required libraries:
+### 2. (Recommended) Create a virtual environment
+```bash
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# macOS / Linux
+source venv/bin/activate
+```
 
-- customtkinter
-- pandas
-- openpyxl
-
-Install them using pip:
-
+### 3. Install dependencies
+```bash
 pip install customtkinter pandas openpyxl
+```
 
-Then run the program:
+| Library | Purpose | Built-in? |
+|---------|---------|-----------|
+| `customtkinter` | Modern UI framework | ❌ |
+| `pandas` | Read CSV / Excel files | ❌ |
+| `openpyxl` | Excel `.xlsx` support for pandas | ❌ |
+| `tkinter` | Base GUI | ✅ |
+| `csv`, `os`, `sys`, `json`, `random`, `datetime` | Standard utilities | ✅ |
 
+---
+
+## ▶️ Running the Application
+
+```bash
 python GUI.py
+```
+
+> Make sure `GUI.py` and `newword_backend.py` are in the **same folder**, along with your `icon.ico` file.
 
 ---
 
-# Built With
+## 📁 Project Structure
 
-- Python
-- CustomTkinter
-- Pandas
+```
+lexflow/
+├── GUI.py                  # Main application & UI
+├── newword_backend.py      # Core logic (WordTrainer, SRS, stats)
+├── icon.ico                # App icon
+│
+├── review_30min.csv        # Auto-generated SRS review files
+├── review_1day.csv
+├── review_3day.csv
+├── review_7day.csv
+├── review_meta.json        # SRS timing metadata
+│
+├── mistake.csv             # Vocabulary mistakes
+├── quiz_mistakes.csv       # Quiz mistakes
+└── study_stats.json        # Daily learning statistics
+```
+
+> All data files are **auto-generated** in the same directory as `GUI.py`. No manual setup required.
 
 ---
 
-# Author
+## 🖼️ Interface Overview
 
-Nguyễn Lê Anh Tuấn
+| Tab | Description |
+|-----|-------------|
+| 📚 **Học từ** | Vocabulary learning with SRS badges and review reminders |
+| ✏️ **Thêm từ** | Add and manage vocabulary entries |
+| 📝 **Trắc nghiệm** | Multiple-choice quiz with timer and mistake tracking |
+| ➕ **Thêm câu** | Create and manage quiz question datasets |
 
-Keep learning. Keep growing.
+---
+
+## 🔄 SRS Workflow
+
+```
+Learn new words
+      ↓
+  review_30min  ──(30 min)──►  review_1day  ──(1 day)──►  review_3day  ──(3 days)──►  review_7day
+      ▲                                                                                      │
+      └──────────────────────────── cycle repeats ◄────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 Technologies
+
+- **Python 3.10+**
+- **CustomTkinter** — modern dark/light mode UI
+- **Pandas** — fast CSV & Excel file handling
+- **CSV / JSON** — lightweight local data storage
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+
+**👨‍💻 Author: Nguyễn Lê Anh Tuấn**
+
+💙 If this project helped you, consider supporting:
+
+**MOMO:** `0835787489` &nbsp;|&nbsp; **MBbank:** `240120076868`
+
+</div>
