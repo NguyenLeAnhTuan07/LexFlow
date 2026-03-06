@@ -17,7 +17,12 @@ from newword_backend import (
 )
 
 # Thư mục chứa GUI.py — dùng làm gốc lưu tất cả file data
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Khi chạy .exe (PyInstaller), dùng thư mục chứa .exe
+# Khi chạy .py thường, dùng thư mục chứa .py
+if getattr(sys, 'frozen', False):
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")

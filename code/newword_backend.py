@@ -6,7 +6,11 @@ import datetime
 import pandas as pd
 
 # Thư mục chứa backend — dùng làm gốc lưu tất cả file data
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+import sys as _sys
+if getattr(_sys, 'frozen', False):
+    BASE_DIR = os.path.dirname(_sys.executable)
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def _data_path(filename):
     """Trả về đường dẫn tuyệt đối trong cùng thư mục với script."""
