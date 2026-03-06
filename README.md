@@ -105,7 +105,7 @@ python GUI.py
 
 ---
 
-## 🛠 Built With
+## Built With
 
 - Python
 - CustomTkinter
