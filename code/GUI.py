@@ -366,6 +366,10 @@ def show_review_picker(due_stages):
     popup.title("Chon stage on tap")
     popup.geometry("360x300")
     popup.grab_set()
+    try:
+        popup.after(200, lambda: popup.wm_iconbitmap(resource_path("icon.ico")))
+    except Exception:
+        pass
 
     ctk.CTkLabel(popup, text="Chọn bài ôn:", font=("Arial", 16, "bold")).pack(pady=14)
     for stage in due_stages:
@@ -385,6 +389,10 @@ def show_stats_popup():
     popup.title("Thong ke")
     popup.geometry("540x400")
     popup.grab_set()
+    try:
+        popup.after(200, lambda: popup.wm_iconbitmap(resource_path("icon.ico")))
+    except Exception:
+        pass
 
     ctk.CTkLabel(popup, text="📊 Thống kê 7 ngày", font=("Arial", 18, "bold")).pack(pady=14)
     weekly = get_weekly_stats()
@@ -533,7 +541,7 @@ def vocab_preview_add(values):
 # ════════════════════════════════════════════════
 
 root = ctk.CTk()
-root.title("LexFlow - Cre: Nguyen Le Anh Tuan  |  MOMO: 0835787489  |  MBbank: 240120076868")
+root.title("LexFlow")
 try:
     root.iconbitmap(resource_path("icon.ico"))
 except Exception:
@@ -665,7 +673,7 @@ progress_label.pack()
 
 ctk.CTkLabel(learn_frame,
     text="Cre: Nguyen Le Anh Tuan  |  MOMO: 0835787489  |  MBbank: 240120076868",
-    font=("Arial", 20), text_color="#444").pack(side="bottom", pady=6)
+    font=("Arial", 10), text_color="#444").pack(side="bottom", pady=6)
 
 switch_quiz_mode()
 
@@ -742,9 +750,15 @@ for col, (h_text, w) in enumerate(zip(HEADERS, col_widths)):
 # KHỞI ĐỘNG
 # ════════════════════════════════════════════════
 
-update_review_badges()
-update_mistake_badge()
-root.after(500, check_due_on_startup)
-
-root.protocol("WM_DELETE_WINDOW", on_closing)
-root.mainloop()
+try:
+    update_review_badges()
+    update_mistake_badge()
+    root.after(500, check_due_on_startup)
+    root.protocol("WM_DELETE_WINDOW", on_closing)
+    root.mainloop()
+except Exception as e:
+    import traceback
+    with open("error_log.txt", "w", encoding="utf-8") as f:
+        traceback.print_exc(file=f)
+    from tkinter import messagebox
+    messagebox.showerror("Lỗi khởi động", str(e) + "\n\nXem chi tiết trong error_log.txt")
