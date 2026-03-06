@@ -149,38 +149,51 @@ def add_words_to_review(words):
     return added
 
 
-def finish_review_stage(stage, passed_words, failed_words):
+def promote_review_word(stage, word_dict):
     """
-    Sau khi ôn xong stage:
-    - passed → chuyển sang stage kế (bỏ trùng)
-    - failed  → ở lại stage hiện tại (bỏ trùng)
-    - Xóa file stage hiện tại, cập nhật meta
+    Đúng trong review → xóa từ khỏi stage hiện tại, thêm vào stage kế.
+    7day đúng → chỉ xóa (không thêm vào đâu nữa — coi như thuộc).
     """
     next_stage = NEXT_STAGE[stage]
-    path       = _review_path(stage)
+    _remove_word_from_file(_review_path(stage), word_dict)
 
-    # Xóa file stage hiện tại
-    if os.path.exists(path):
-        os.remove(path)
-
-    meta = _load_meta()
-    meta.pop(f"{stage}_due", None)
-    _save_meta(meta)
-
-    if passed_words:
-        _append_unique(_review_path(next_stage), passed_words)
+    if next_stage != "30min":
+        # Chuyển lên stage kế
+        _append_unique(_review_path(next_stage), [word_dict])
         meta = _load_meta()
         if f"{next_stage}_due" not in meta:
             due = datetime.datetime.now() + REVIEW_INTERVALS[next_stage]
             meta[f"{next_stage}_due"] = due.isoformat()
             _save_meta(meta)
+    else:
+        # 7day đúng → xóa hẳn, không thêm vào đâu
+        pass
 
-    if failed_words:
-        _append_unique(_review_path(stage), failed_words)
+    # Nếu file stage hiện tại rỗng → xóa due
+    remaining = _read_csv_dicts(_review_path(stage))
+    if not remaining:
         meta = _load_meta()
-        due  = datetime.datetime.now() + REVIEW_INTERVALS[stage]
+        meta.pop(f"{stage}_due", None)
+        _save_meta(meta)
+
+
+def demote_review_word(stage, word_dict):
+    """
+    Sai trong review → xóa vị trí cũ, thêm lại cuối file (ôn lại sau).
+    """
+    _remove_word_from_file(_review_path(stage), word_dict)
+    _append_unique(_review_path(stage), [word_dict])
+    # Đảm bảo có due
+    meta = _load_meta()
+    if f"{stage}_due" not in meta:
+        due = datetime.datetime.now() + REVIEW_INTERVALS[stage]
         meta[f"{stage}_due"] = due.isoformat()
         _save_meta(meta)
+
+
+def finish_review_stage(stage, passed_words, failed_words):
+    """Legacy — giữ lại để không break, nhưng real-time đã xử lý hết."""
+    pass
 
 
 def get_due_stages():
@@ -309,7 +322,7 @@ class WordTrainer:
 
         # Xác định loại file
         self._review_stages = [f"review_{s}.csv" for s in REVIEW_STAGES]
-        self._is_mistake    = (self.basename == MISTAKE_FILE)
+        self._is_mistake    = (self.basename == os.path.basename(MISTAKE_FILE).lower())
         self._is_review     = (self.basename in self._review_stages)
         self._stage         = None
         for s in REVIEW_STAGES:
@@ -408,9 +421,13 @@ class WordTrainer:
             self._passed.append(rd)
 
             if self._is_mistake:
-                # Đúng trong mistake mode → xóa luôn khỏi file
+                # Đúng mistake mode → xóa khỏi mistake.csv real-time
                 remove_from_mistake(rd)
-            # Không thêm lại vào words (từ đúng thì bỏ qua)
+            elif self._is_review and self._stage:
+                # Đúng review mode → promote lên stage kế real-time
+                promote_review_word(self._stage, rd)
+
+            # Từ đúng không hỏi lại
             return True, self.current
         else:
             self.wrong_count += 1
@@ -418,18 +435,18 @@ class WordTrainer:
             record_stat(False)
             self._failed.append(rd)
 
-            # Luôn thêm vào mistake.csv (bỏ trùng)
+            # Luôn ghi vào mistake.csv (bỏ trùng)
             add_to_mistake(rd)
 
             if self._is_mistake:
-                # Sai trong mistake mode → xóa vị trí cũ, thêm lại cuối
+                # Sai mistake mode → xóa vị trí cũ, thêm lại cuối real-time
                 add_back_to_mistake(rd)
-                # Thêm lại vào queue để hỏi lại trong session
-                self.words.append(self.current)
-            else:
-                # File thường → hỏi lại trong session
-                self.words.append(self.current)
+            elif self._is_review and self._stage:
+                # Sai review mode → xóa vị trí cũ, thêm lại cuối real-time
+                demote_review_word(self._stage, rd)
 
+            # Hỏi lại trong session
+            self.words.append(self.current)
             return False, self.current
 
     def finish_session(self):

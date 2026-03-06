@@ -292,9 +292,8 @@ def show_learn_completion():
         acc = int(trainer.correct_count/tot*100) if tot else 0
         msg = f"📊 Kết quả:\n✅ {trainer.correct_count}  ❌ {trainer.wrong_count}\n🎯 {acc}%  |  🔥 {trainer.best_streak}"
         if current_review_stage:
-            from newword_backend import finish_review_stage
+            # Real-time đã xử lý từng từ rồi, chỉ cần hiện tổng kết
             next_s = {"30min":"1day","1day":"3day","3day":"7day","7day":"30min"}[current_review_stage]
-            finish_review_stage(current_review_stage, review_passed_words, review_failed_words)
             if review_passed_words: msg += f"\n✅ {len(review_passed_words)} từ → review_{next_s}"
             if review_failed_words: msg += f"\n🔁 {len(review_failed_words)} từ sai → ôn lại"
         else:
