@@ -5,6 +5,13 @@ import json
 import datetime
 import pandas as pd
 
+# Thư mục chứa backend — dùng làm gốc lưu tất cả file data
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+def _data_path(filename):
+    """Trả về đường dẫn tuyệt đối trong cùng thư mục với script."""
+    return os.path.join(BASE_DIR, filename)
+
 # ============================================================
 # CONSTANTS
 # ============================================================
@@ -26,8 +33,8 @@ NEXT_STAGE = {
 }
 
 CSV_HEADERS  = ["word", "type", "meaning", "example", "translate_example"]
-MISTAKE_FILE = "mistake.csv"
-META_FILE    = "review_meta.json"
+MISTAKE_FILE = _data_path("mistake.csv")
+META_FILE    = _data_path("review_meta.json")
 
 
 # ============================================================
@@ -123,7 +130,7 @@ def _save_meta(meta):
 
 
 def _review_path(stage):
-    return f"review_{stage}.csv"
+    return _data_path(f"review_{stage}.csv")
 
 
 def add_words_to_review(words):
@@ -242,7 +249,7 @@ def add_back_to_mistake(word_dict):
 # ============================================================
 # Stats
 # ============================================================
-STATS_FILE = "study_stats.json"
+STATS_FILE = _data_path("study_stats.json")
 
 
 def load_stats():
