@@ -1,11 +1,11 @@
-# LexFlow 🚀
+# LexFlow
 
 LexFlow is a lightweight desktop application designed to help users learn English vocabulary efficiently.  
 The application allows users to import vocabulary lists and practice words through a simple and intuitive interface.
 
 ---
 
-## ✨ Features
+## Features
 
 - Import vocabulary from **CSV** or **XLSX**
 - Random vocabulary practice
@@ -15,7 +15,7 @@ The application allows users to import vocabulary lists and practice words throu
 
 ---
 
-## 📂 Vocabulary File Format
+## Vocabulary File Format
 
 LexFlow supports vocabulary files created using spreadsheet software such as Microsoft Excel.
 
@@ -36,7 +36,7 @@ Your vocabulary file must contain **5 columns** with the following headers:
 
 ---
 
-## 📊 How to Create a Vocabulary File
+## How to Create a Vocabulary File
 
 You can create the vocabulary file using Microsoft Excel or any spreadsheet software.
 
@@ -73,7 +73,7 @@ After saving the file, you can load it into LexFlow to start learning vocabulary
 
 ---
 
-## 🚀 Running LexFlow
+## Running LexFlow
 
 ### Option 1 — Run the executable file
 
@@ -105,18 +105,6 @@ python GUI.py
 
 ---
 
-## 📦 Requirements
-
-Python 3.x
-
-Libraries used:
-
-- customtkinter
-- pandas
-- openpyxl
-
----
-
 ## 🛠 Built With
 
 - Python
@@ -125,7 +113,7 @@ Libraries used:
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 Nguyễn Lê Anh Tuấn  
 
