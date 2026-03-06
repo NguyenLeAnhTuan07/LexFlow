@@ -9,7 +9,9 @@ The application allows users to import vocabulary lists and practice words throu
 
 - Import vocabulary from **CSV** or **XLSX**
 - Random vocabulary practice
-- Simple and clean desktop interface
+- **Multiple-choice answer mode** to test vocabulary knowledge
+- **Text-to-Speech pronunciation** to help users hear how words are pronounced
+- **Improved and cleaner user interface**
 - Lightweight and fast
 - Designed for efficient daily vocabulary learning
 
